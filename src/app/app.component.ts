@@ -1,9 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { httpService } from 'http-service.service';
-import { TransferState, makeStateKey } from "@angular/core";
-
-const pd_STREET_DETAILS = makeStateKey("pd-properties");
-
+import { Component } from '@angular/core';
 
 
 

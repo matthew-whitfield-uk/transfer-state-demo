@@ -1,52 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { httpService } from 'http-service.service';
-import { TransferState, makeStateKey } from "@angular/core";
+import { TransferState, makeStateKey } from '@angular/core';
 
-const pd_STREET_DETAILS = makeStateKey("pd-properties");
-
-
+const SYNC_KEY = makeStateKey('sync-state-key');
+const ASYNC_KEY = makeStateKey('async-state-key');
 
 @Component({
   selector: 'app-test-page',
   templateUrl: './test-page.component.html',
-  styleUrls: ['./test-page.component.scss']
+  styleUrls: ['./test-page.component.scss'],
 })
 export class TestPageComponent {
-
-  constructor(private http: httpService, private state: TransferState){}
-
+  constructor(private http: httpService, private state: TransferState) {}
 
   ngOnInit(): void {
 
+    // getting the state of a syncronous state set and logging it - working
 
-    const state = this.state.get(pd_STREET_DETAILS, <any>{})
+      const sync = this.state.get(SYNC_KEY, <any>{});
 
-    console.log('reading state', state);
+      console.log('Sync transfer state key', sync);
 
+    // getting the state of a asyncronous HTTP request state set and logging it - not working
 
+      const async = this.state.get(ASYNC_KEY, <any>{});
 
+      console.log('Async HTTP transfer state key', async);
 
-    this.slowFunction();
+    this.setServerStates();
   }
 
-  slowFunction() {
+  setServerStates() {
 
-    setTimeout(() => {
+      // testing a normal transfer state syncronously
 
-      this.http.getJSON("https://dummyjson.com/products/1").subscribe((res) => {
+      this.state.set(SYNC_KEY, <any>1234);
 
-      console.log('setting state', res);
+      // testing an async http request
 
-
-      this.state.set(pd_STREET_DETAILS, <any>res)
-
-      return;
-
-
-    })
-    }, 1000);
-
-
+      this.http.getJSON('https://dummyjson.com/products/1').subscribe((res) => {
+        this.state.set(ASYNC_KEY, <any>res);
+      });
   }
-
 }

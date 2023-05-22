@@ -6,12 +6,6 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
 
-import {
-  bootstrapApplication,
-  provideClientHydration,
-  withNoHttpTransferCache,
-} from '@angular/platform-browser';
-
 
 
 @NgModule({
@@ -23,7 +17,7 @@ import {
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [provideClientHydration()],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
