@@ -14,32 +14,31 @@ export class TestPageComponent {
   constructor(private http: httpService, private state: TransferState) {}
 
   ngOnInit(): void {
-
     // getting the state of a syncronous state set and logging it - working
 
-      const sync = this.state.get(SYNC_KEY, <any>{});
+    const sync = this.state.get(SYNC_KEY, <any>{});
 
-      console.log('Sync transfer state key', sync);
+    console.log('Sync transfer state key', sync);
 
-    // getting the state of a asyncronous HTTP request state set and logging it - not working
+    // getting the state of a asyncronous HTTP request
 
-      const async = this.state.get(ASYNC_KEY, <any>{});
+    const async = this.state.get(ASYNC_KEY, <any>{});
 
-      console.log('Async HTTP transfer state key', async);
+    console.log('Async HTTP transfer state key', async);
 
     this.setServerStates();
   }
 
   setServerStates() {
+    // testing a normal transfer state syncronously
 
-      // testing a normal transfer state syncronously
+    this.state.set(SYNC_KEY, <any>1234);
 
-      this.state.set(SYNC_KEY, <any>1234);
+    // testing an async http request
 
-      // testing an async http request
-
-      this.http.getJSON('https://dummyjson.com/products/1').subscribe((res) => {
-        this.state.set(ASYNC_KEY, <any>res);
-      });
+    this.http.getJSON('https://dummyjson.com/products/1').subscribe((res) => {
+      console.log('state that should be transferred', res);
+      this.state.set(ASYNC_KEY, <any>res);
+    });
   }
 }
